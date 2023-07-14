@@ -12,11 +12,9 @@ class NewsViewModel {
     var onFailure = Dynamic<Error?>(nil)
     
     func getNews() {
-        let endPoint = "v2/top-headlines?country=us&category=business&apiKey=e4a998b5b52847ab9676f1907648c874"
-        
         Task {
             do {
-                let news: NewsModel = try await ApiService.shared.get(endpoint: endPoint)
+                let news: NewsModel = try await ApiService.shared.get(endpoint: RequestInfo.getNews.path)
                 if let articles = news.articles {
                     onSuccess.value = articles
                 }

@@ -34,4 +34,9 @@ class EditProfileCoordinator: Coordinator {
     func finish() {
         navigationController.popViewController(animated: true)
     }
+    
+    func goToLoginVc() {
+        let loginCoordinator = LoginCoordinator(navigationController: navigationController, window: window)
+        loginCoordinator.start()
+    }
 }

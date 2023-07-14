@@ -27,7 +27,7 @@ class ApiService {
     private func handleApiErrors<T: Decodable>(apiRequest: @escaping () -> URLRequest) async throws -> T {
         let (data, response) = try await client.data(for: apiRequest())
         guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-            throw NSError(domain: "com.example.ApiService", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid response"])
+            throw NSError(domain: Constants.ProjectInfo.domain, code: 0, userInfo: [NSLocalizedDescriptionKey: Constants.ApiInfo.apiInvalidError])
         }
         
         do {
@@ -57,14 +57,14 @@ class ApiService {
         return try await handleApiErrors(apiRequest: { request })
     }
     
-    func post<T: Decodable>(endpoint: String, data: [String: Any]) async throws -> T {
+    func post<T: Decodable>(endpoint: String, data: Codable) async throws -> T {
         let url = URL(string: "\(Constants.ApiInfo.baseUrlUserListing)/\(endpoint)")!
         var request = URLRequest(url: url)
-        request.httpMethod = "POST"
+        request.httpMethod = Constants.ApiInfo.post
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         do {
-            request.httpBody = try JSONSerialization.data(withJSONObject: data, options: [])
+            request.httpBody = try JSONEncoder().encode(data)
         } catch {
             throw error
         }
@@ -75,7 +75,7 @@ class ApiService {
     func put<T: Decodable>(endpoint: String, data: [String: Any]) async throws -> T {
         let url = URL(string: "\(Constants.ApiInfo.baseUrlUserListing)/\(endpoint)")!
         var request = URLRequest(url: url)
-        request.httpMethod = "PUT"
+        request.httpMethod = Constants.ApiInfo.put
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         do {
@@ -90,25 +90,25 @@ class ApiService {
     func delete<T: Decodable>(endpoint: String) async throws -> T {
         let url = URL(string: "\(Constants.ApiInfo.baseUrlUserListing)/\(endpoint)")!
         var request = URLRequest(url: url)
-        request.httpMethod = "DELETE"
+        request.httpMethod = Constants.ApiInfo.delete
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         return try await handleApiErrors(apiRequest: { request })
     }
     
     func patch<T: Decodable>(endpoint: String, data: EditUserRequest) async throws -> T {
-            let url = URL(string: "\(Constants.ApiInfo.baseUrlUserListing)/\(endpoint)")!
-            var request = URLRequest(url: url)
-            request.httpMethod = "PATCH"
-            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-
-            do {
-                request.httpBody = try JSONEncoder().encode(data)
-            } catch {
-                throw error
-            }
-
-            return try await handleApiErrors(apiRequest: { request })
+        let url = URL(string: "\(Constants.ApiInfo.baseUrlUserListing)/\(endpoint)")!
+        var request = URLRequest(url: url)
+        request.httpMethod = Constants.ApiInfo.patch
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        do {
+            request.httpBody = try JSONEncoder().encode(data)
+        } catch {
+            throw error
         }
+        
+        return try await handleApiErrors(apiRequest: { request })
+    }
     
 }

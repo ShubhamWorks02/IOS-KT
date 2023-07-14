@@ -18,6 +18,7 @@ class EditProfileVc: UIViewController {
     @IBOutlet weak private var tfJob: UITextField!
     @IBOutlet weak private var imgContainerView: UIView!
     @IBOutlet weak private var containerView: UIView!
+    @IBOutlet weak private var scrollView: UIScrollView!
     
     // MARK: VARIABLES
     var userData: User?
@@ -28,6 +29,15 @@ class EditProfileVc: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpViews()
+    }
+    
+    
+    @IBAction func logOutTapped(_ sender: UIButton) {
+        UserManager.shared.isUserLogin = false
+        DispatchQueue.main.async {
+            self.coordinator?.goToLoginVc()
+        }
+        
     }
     
 }
@@ -103,6 +113,7 @@ extension EditProfileVc {
         guard let userData else {
             return
         }
+        let keyboardDismissHelper = KeyboardDismissHelper.shared(view: scrollView)
         placeImageOnProfile()
         configureUserData(user: userData)
     }

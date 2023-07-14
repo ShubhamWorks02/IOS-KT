@@ -17,9 +17,11 @@ class HomeCoordinator: Coordinator {
     }
     
     func start() {
-        if let homeVc = UIStoryboard(name: Constants.StoryBoards.kt, bundle: nil).instantiateViewController(withIdentifier: Constants.Vcs.homeVc) as? HomeVc {
-            homeVc.coordinator = self
-            navigationController.pushViewController(homeVc, animated: true)
+        DispatchQueue.main.async {
+            if let homeVc = UIStoryboard(name: Constants.StoryBoards.kt, bundle: nil).instantiateViewController(withIdentifier: Constants.Vcs.homeVc) as? HomeVc {
+                homeVc.coordinator = self
+                self.navigationController.viewControllers = [homeVc]
+            }
         }
     }
     

@@ -12,7 +12,7 @@ class EditProfileViewModel {
     var isResponseArrivedSucessfully = Dynamic<Bool>(false)
     
     func editProfileOnServer(userId: Int, userRequest: EditUserRequest) {
-        let endPoint = "api/users/\(userId)"
+        let endPoint = RequestInfo.updateProfile(userId: userId)
         let reachability = try? Reachability()
         if reachability?.connection == .unavailable {
             print(Constants.Strings.connectionError)
@@ -21,7 +21,8 @@ class EditProfileViewModel {
         
         Task {
             do {
-                let response: EditUserResponse = try await ApiService.shared.patch(endpoint: endPoint, data: userRequest)
+                let response: EditUserResponse = try await ApiService.shared.patch(endpoint: endPoint.path, data: userRequest)
+                print(response.name)
                 isResponseArrivedSucessfully.value = true
             } catch {
                 isResponseArrivedSucessfully.value = false
@@ -30,5 +31,4 @@ class EditProfileViewModel {
         }
     }
 
-    
 }

@@ -16,6 +16,7 @@ class UserTableViewCell: UITableViewCell {
     @IBOutlet weak private var lblUserEmail: UILabel!
     @IBOutlet weak private var lblUserid: UILabel!
     
+    // MARK: LIFECYCLE METHOD
     override func awakeFromNib() {
         super.awakeFromNib()
         imgUser.makeViewCircular()

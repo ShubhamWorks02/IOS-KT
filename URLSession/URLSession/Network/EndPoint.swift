@@ -8,7 +8,6 @@
 import Foundation
 
 protocol Endpoint {
-    var baseUrl: String { get }
     var path: String { get }
     var url: URL { get }
 }

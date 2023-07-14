@@ -25,13 +25,13 @@ class ImageUploadVc: UIViewController, URLSessionTaskDelegate {
     @IBAction func pickImage(_ sender: UIButton) {
         progessView.progress = 0
         DispatchQueue.global(qos: .background).async {
-            self.uploadData(image: UIImage(named: "starShot") ?? UIImage(), type: ImageUploadModel.self) {(result: Result<ImageUploadModel, Error>) in
+            self.uploadData(image: UIImage(named: Constants.Resources.starShotImage) ?? UIImage(), type: ImageUploadModel.self) {(result: Result<ImageUploadModel, Error>) in
                 switch result {
                 case .success(let imageResponse):
-                    print("Response: ",imageResponse.data.displayURL)
+                    print("\(Constants.Strings.responseLabel): ",imageResponse.data.displayURL)
                     break
                 case .failure(let error):
-                    print("Error: ",error)
+                    print("\(Constants.ApiInfo.apiInvalidError): ",error)
                 }
             }
         }
@@ -64,10 +64,10 @@ extension  ImageUploadVc {
     }
     
     func uploadData<T: Decodable>(image: UIImage, type : T.Type , completion : @escaping ((Result<T,Error>) -> ()) ) {
-        if var url = URL(string: "https://api.imgbb.com/1/upload") {
+        if var url = URL(string: Constants.ApiInfo.uploadUrl) {
             url.append(queryItems: [URLQueryItem(name: "key", value: "dd7832bb31a876cce8cc739a31728d44")])
             var urlRequest = URLRequest(url: url)
-            urlRequest.httpMethod = "POST"
+            urlRequest.httpMethod = Constants.ApiInfo.post
             let boundary = UUID().uuidString
             urlRequest.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
             let data = setUpMultiPartData(paramName: "image", fileName: "ShortHand", image: image, boundary: boundary)
@@ -77,7 +77,7 @@ extension  ImageUploadVc {
                         let response = try JSONDecoder().decode(T.self, from: data)
                         completion(.success(response))
                     } catch let error {
-                        print("error \(error)")
+                        print("\(Constants.ApiInfo.apiInvalidError): \(error)")
                     }
                 }
             }
