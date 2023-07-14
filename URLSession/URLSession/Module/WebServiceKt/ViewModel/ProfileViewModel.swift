@@ -1,17 +1,18 @@
 //
-//  EditProfileViewModel.swift
+//  ProfileViewModel.swift
 //  URLSession
 //
-//  Created by Shubham Bhatt on 05/07/23.
+//  Created by Shubham Bhatt on 14/07/23.
 //
+
 import UIKit
 import Reachability
 
-class EditProfileViewModel {
+class ProfileViewModel {
     
     var isResponseArrivedSucessfully = Dynamic<Bool>(false)
     
-    func editProfileOnServer(userId: Int, userRequest: EditUserRequest) {
+    func showUpdatedProfile(userId: Int) {
         let endPoint = "api/users/\(userId)"
         let reachability = try? Reachability()
         if reachability?.connection == .unavailable {
@@ -21,7 +22,7 @@ class EditProfileViewModel {
         
         Task {
             do {
-                let response: EditUserResponse = try await ApiService.shared.patch(endpoint: endPoint, data: userRequest)
+                let user: User = try await ApiService.shared.get(endpoint: endPoint)
                 isResponseArrivedSucessfully.value = true
             } catch {
                 isResponseArrivedSucessfully.value = false

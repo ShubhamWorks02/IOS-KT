@@ -18,7 +18,7 @@ class ExchangeCoordinator: Coordinator {
     }
     
     func start() {
-        if let exchangeVc = UIStoryboard(name: "Exchange", bundle: nil).instantiateViewController(withIdentifier: "DownloadVc") as? DownloadVc {
+        if let exchangeVc = UIStoryboard(name: Constants.StoryBoards.exchange, bundle: nil).instantiateViewController(withIdentifier: Constants.Vcs.downloadVc) as? DownloadVc {
             exchangeVc.coordinator = self
             navigationController.pushViewController(exchangeVc, animated: true)
         }
@@ -28,4 +28,7 @@ class ExchangeCoordinator: Coordinator {
         navigationController.popToRootViewController(animated: true)
     }
     
+    func finish() {
+        navigationController.popViewController(animated: true)
+    }
 }

@@ -22,21 +22,48 @@ class EditProfileVc: UIViewController {
     // MARK: VARIABLES
     var userData: User?
     private lazy var viewModel = EditProfileViewModel()
+    var coordinator: EditProfileCoordinator?
+    weak var userDelegate: UpdateUserDataDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpViews()
     }
     
+}
+
+// MARK: NAVIGATION BUTTON ACTIONS
+extension EditProfileVc {
+    
+    @objc private func saveProfileButtonClicked(_ sender: UITapGestureRecognizer) {
+        guard let firstName = tfFirstName.text,
+              let lastName = tfLastName.text,
+              let job = tfJob.text,
+              validateEntriesAndUpdate(firstName: firstName, lastName: lastName, job: job) else {
+            return
+        }
+        
+        getResponseStatus()
+        // Here implement Profile Vc navigation with fields
+    }
+    
+    @objc private func backButtonPressed(_ sender: UITapGestureRecognizer) {
+        navigationController?.popViewController(animated: true)
+    }
+}
+
+// MARK: INITIAL SETUP
+extension EditProfileVc {
+    
     private func placeImageOnProfile() {
         let childView = UIView()
         childView.frame = CGRect(x: (imgUserProfile.bounds.width) - 18, y: imgUserProfile.bounds.height - 20, width: 28, height: 28)
-        childView.backgroundColor = UIColor(named: "tableTheme")
+        childView.backgroundColor = UIColor(named: Constants.Resources.colorTableTheme)
         childView.layer.cornerRadius = childView.bounds.width/2
         let cameraImg = UIImageView()
         
-        cameraImg.image = UIImage(named: "camera")
-        cameraImg.tintColor = UIColor(named: "themeColor")
+        cameraImg.image = UIImage(named: Constants.Resources.camera)
+        cameraImg.tintColor = UIColor(named: Constants.Resources.colorTheme)
         cameraImg.frame = CGRect(x: childView.bounds.midX - 6.5, y: childView.bounds.midY - 6.5, width: 13, height: 13)
         childView.layer.borderWidth = 2
         childView.layer.borderColor = UIColor.white.cgColor
@@ -46,74 +73,31 @@ class EditProfileVc: UIViewController {
         imgUserProfile.isUserInteractionEnabled = true
         childView.addSubview(cameraImg)
         childView.layer.cornerRadius = childView.bounds.height / 2
-        imgUserProfile.layer.cornerRadius = imgUserProfile.bounds.height/2
+        imgUserProfile.layer.cornerRadius = imgUserProfile.bounds.height / 2
         imgContainerView.addSubview(childView)
     }
     
     private func getResponseStatus() {
         viewModel.isResponseArrivedSucessfully.bind { [weak self] isSuccessFull in
-            DispatchQueue.main.async {
-                let alertController = UIAlertController(title: "Profile Updated", message: "Thank you", preferredStyle: .alert)
-                let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-                alertController.addAction(okAction)
-                
-                // Present the alert
-                self?.present(alertController, animated: true, completion: nil)
+            DispatchQueue.main.async { [weak self] in
+                if let userData = self?.userData {
+                    self?.userDelegate?.updateUser(user: userData)
+                    self?.navigationController?.popViewController(animated: true)
+                }
             }
-        }
-    }
-    
-    
-    @objc private func saveProfileButtonClicked(_ sender: UITapGestureRecognizer) {
-        guard let firstName = tfFirstName.text,
-              let lastName = tfLastName.text,
-              let job = tfJob.text,
-              validateEntriesAndUpdate(firstName: firstName, lastName: lastName, job: job) else {
-            return
-        }
-        getResponseStatus()
-    }
-    
-    @objc private func backButtonPressed(_ sender: UITapGestureRecognizer) {
-        navigationController?.popViewController(animated: true)
-    }
-    
-    private func validateEntriesAndUpdate(firstName: String, lastName: String, job: String) -> Bool {
-        if !firstName.isEmpty && !lastName.isEmpty && !job.isEmpty {
-            let editUserReq = EditUserRequest(name: "\(firstName) \(lastName)", job: tfJob.text)
-            if let id = userData?.id {
-                viewModel.editProfileOnServer(userId: id, userRequest: editUserReq)
-                return true
-            }
-        } else {
-            let alertController = UIAlertController(title: "Invalid Entries", message: "Please fill in all the fields.", preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-            alertController.addAction(okAction)
-            present(alertController, animated: true, completion: nil)
-        }
-        return false
-    }
-    
-    private func configureUserData(user: User) {
-        tfFirstName.text = user.firstName
-        tfLastName.text = user.lastName
-        tfEmail.text = user.email
-        tfJob.text = "zion resident"
-        if let userImg = user.avatar {
-            imgUserProfile.kf.setImage(with: URL(string: userImg))
         }
     }
     
     private func setUpViews() {
         navigationController?.setNavigationBarHidden(false, animated: false)
-        navigationItem.title = "Edit Profile"
-        let saveBtn = UIBarButtonItem(image: UIImage(named: "imgTick"),
+        navigationItem.title = Constants.Navigation.editProfileTitle
+        let saveBtn = UIBarButtonItem(image: UIImage(named: Constants.Resources.imgTick),
                                       style: .plain, target: self, action: #selector(saveProfileButtonClicked))
-        saveBtn.tintColor = UIColor(named: "tableTheme")
+        saveBtn.tintColor = UIColor(named: Constants.Resources.colorTableTheme)
         navigationItem.rightBarButtonItem = saveBtn
-        let backBtn = UIBarButtonItem(image: UIImage(named: "imgback2"),
+        let backBtn = UIBarButtonItem(image: UIImage(named: Constants.Resources.imgback2),
                                       style: .plain, target: self, action: #selector(backButtonPressed))
-        backBtn.tintColor = UIColor(named: "tableTheme")
+        backBtn.tintColor = UIColor(named: Constants.Resources.colorTableTheme)
         navigationItem.leftBarButtonItem = backBtn
         containerView.layer.cornerRadius = 15
         guard let userData else {
@@ -122,5 +106,42 @@ class EditProfileVc: UIViewController {
         placeImageOnProfile()
         configureUserData(user: userData)
     }
+}
+
+// MARK: VALIDATION
+extension EditProfileVc {
+    private func validateEntriesAndUpdate(firstName: String, lastName: String, job: String) -> Bool {
+        if !firstName.isEmpty && !lastName.isEmpty && !job.isEmpty {
+            let editUserReq = EditUserRequest(name: "\(firstName) \(lastName)", job: tfJob.text)
+            if let id = userData?.id {
+                viewModel.editProfileOnServer(userId: id, userRequest: editUserReq)
+                return true
+            }
+        } else {
+            let alertController = UIAlertController(title: Constants.Strings.invalidEntries, message: Constants.Strings.fieldSuggession, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: Constants.Strings.alertActionOk, style: .default, handler: nil)
+            alertController.addAction(okAction)
+            present(alertController, animated: true, completion: nil)
+        }
+        return false
+    }
     
+}
+
+// MARK: DATA CONFIGURATION
+extension EditProfileVc {
+    private func configureUserData(user: User) {
+        tfFirstName.text = user.firstName
+        tfLastName.text = user.lastName
+        tfEmail.text = user.email
+        tfJob.text = Constants.Strings.userJobName
+        if let userImg = user.avatar {
+            imgUserProfile.kf.setImage(with: URL(string: userImg))
+        }
+    }
+}
+
+// MARK: PROTOCOL
+protocol UpdateUserDataDelegate : AnyObject {
+    func updateUser(user: User)
 }

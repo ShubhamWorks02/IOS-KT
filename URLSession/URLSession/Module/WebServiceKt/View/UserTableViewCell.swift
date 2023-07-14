@@ -21,15 +21,18 @@ class UserTableViewCell: UITableViewCell {
         imgUser.makeViewCircular()
     }
     
+    // MARK: CONFIG CELL
     func configCell(data: User) {
         if let imageUrl = data.avatar {
             imgUser.kf.setImage(with: URL(string: imageUrl))
         }
-        lblUserName.text = "\(data.firstName!) \(data.lastName!)"
-        if let id = data.id {
-            lblUserid.text = "\(id)"
+        if let firstName = data.firstName, let lastName = data.lastName {
+            lblUserName.text = "\(firstName) \(lastName)"
         }
-        lblUserEmail.text = data.email!
+        if let id = data.id, let email = data.email {
+            lblUserid.text = "\(id)"
+            lblUserEmail.text = email
+        }
     }
     
 }

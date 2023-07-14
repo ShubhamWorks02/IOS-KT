@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 struct EditUserRequest: Codable {
     let name, job: String?
 }

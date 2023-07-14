@@ -18,8 +18,11 @@ class AppCoordinator: Coordinator {
     }
     
     func start() {
-        let mainCoordinator = MainCoordinator(navigationController: navigationController, window: window)
-        mainCoordinator.start()
+        let homeCoordinator = HomeCoordinator(navigationController: navigationController, window: window)
+        homeCoordinator.start()
     }
-
+    
+    func finish() {
+        navigationController.popViewController(animated: true)
+    }
 }

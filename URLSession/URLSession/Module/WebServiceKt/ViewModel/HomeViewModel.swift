@@ -15,19 +15,20 @@ class HomeViewModel {
     private (set) var currentPage = Dynamic(0)
     private (set) var totalPages = Dynamic(0)
     private (set) var isLoadingData = Dynamic(true)
-    private (set) var isSearching = Dynamic(false)
     private var filterUsersList = [User]()
+    var isSearching = false
     
     func getUsers() {
         currentPage.value += 1
-        let endPoint = "api/users?page=\(currentPage.value)&per_page=\(5)&delay=\(2)"
-        
+        let endPoint = RequestInfo.getUsers(page: currentPage.value, perPage: 4, delay: 3)
+//        "api/users?page=\(currentPage.value)&per_page=\(4)&delay=\(3)"
         // Connection checks
         let reachability = try? Reachability()
         if reachability?.connection == .unavailable {
-            print("No connection")
+            print(Constants.Strings.connectionError)
             return
         }
+        isLoadingData.value = true
         
         Task {
             do {
@@ -37,15 +38,18 @@ class HomeViewModel {
                     userList.value += users
                     filterUsersList = userList.value
                 }
+                isLoadingData.value = false
             } catch {
                 currentPage.value -= 1
-                print("Error: \(error)")
+                print("\(Constants.Strings.error): \(error)")
             }
+            
         }
+       
     }
     
     func filterUsers(searchQuery: String) {
-        isSearching.value = true
+        isSearching = true
         if searchQuery.isEmpty {
             userList.value = filterUsersList
             return

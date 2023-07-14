@@ -17,7 +17,7 @@ class MainCoordinator: Coordinator {
     }
     
     func start() {
-        if let mainVc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ViewController") as? ViewController {
+        if let mainVc = UIStoryboard(name: Constants.StoryBoards.main, bundle: nil).instantiateViewController(withIdentifier: Constants.Vcs.viewController) as? ViewController {
             mainVc.coordinator = self
             navigationController.pushViewController(mainVc, animated: true)
         }
@@ -33,5 +33,7 @@ class MainCoordinator: Coordinator {
         newsCoordi.start()
     }
     
+    func finish() {
+        navigationController.popViewController(animated: true)
+    }
 }
-

@@ -8,7 +8,7 @@
 import UIKit
 import Kingfisher
 
-class ProfileVc: UIViewController {
+class ProfileVc: UIViewController , UpdateUserDataDelegate {
     
     // MARK: OUTLETS
     @IBOutlet weak private var imgProfile: UIImageView!
@@ -22,6 +22,7 @@ class ProfileVc: UIViewController {
     
     // MARK: VARIABLES
     var userData: User?
+    var coordinator: ProfileCoordinator?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,9 +36,10 @@ class ProfileVc: UIViewController {
     
     @objc private func editProfileTapped(_ sender: UITapGestureRecognizer) {
         guard let editProfileVc = storyboard?.instantiateViewController(
-            withIdentifier: "EditProfileVc") as? EditProfileVc else {
+            withIdentifier: Constants.Vcs.editProfileVc) as? EditProfileVc else {
             return
         }
+        editProfileVc.userDelegate = self
         editProfileVc.userData = userData
         navigationController?.pushViewController(editProfileVc, animated: true)
     }
@@ -65,19 +67,22 @@ extension ProfileVc {
     }
     
     private func setUpViews() {
-        navigationItem.title = "Profile"
-        let saveBtn = UIBarButtonItem(image: UIImage(named: "imgBack"),
+        navigationItem.title = Constants.Navigation.profileTitle
+        let saveBtn = UIBarButtonItem(image: UIImage(named: Constants.Resources.imgBack),
                                       style: .plain, target: self, action: #selector(editProfileTapped(_:)))
-        saveBtn.tintColor = UIColor(named: "tableTheme")
+        saveBtn.tintColor = UIColor(named: Constants.Resources.colorTableTheme)
         navigationItem.rightBarButtonItem = saveBtn
-        navigationItem.setHidesBackButton(true, animated: true)
         profileView.layer.cornerRadius = 12
         notificationView.layer.cornerRadius = 8
+        navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
+    func updateUser(user: User) {
+        userData = user
+    }
 }
 
-// MARK: EXTENSIONS CUSTOMIZE
+// MARK: VIEW EXTENSIONS
 extension UIView {
     func makeViewCircular() {
         layer.cornerRadius = self.frame.height / 2

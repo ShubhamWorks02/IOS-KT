@@ -240,7 +240,6 @@ struct _R {
       var profileVc: RswiftResources.StoryboardViewControllerIdentifier<ProfileVc> { .init(identifier: "ProfileVc", storyboard: name, bundle: bundle) }
 
       func validate() throws {
-        if UIKit.UIImage(named: "EditProfile", in: bundle, compatibleWith: nil) == nil { throw RswiftResources.ValidationError("[R.swift] Image named 'EditProfile' is used in storyboard 'Kt', but couldn't be loaded.") }
         if UIKit.UIImage(named: "offToggle", in: bundle, compatibleWith: nil) == nil { throw RswiftResources.ValidationError("[R.swift] Image named 'offToggle' is used in storyboard 'Kt', but couldn't be loaded.") }
         if UIKit.UIImage(named: "onToggle", in: bundle, compatibleWith: nil) == nil { throw RswiftResources.ValidationError("[R.swift] Image named 'onToggle' is used in storyboard 'Kt', but couldn't be loaded.") }
         if UIKit.UIImage(named: "profile", in: bundle, compatibleWith: nil) == nil { throw RswiftResources.ValidationError("[R.swift] Image named 'profile' is used in storyboard 'Kt', but couldn't be loaded.") }

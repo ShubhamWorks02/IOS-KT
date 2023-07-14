@@ -18,7 +18,7 @@ class NewsCoordinator: Coordinator {
     }
     
     func start() {
-        if let newsVc = UIStoryboard(name: "News", bundle: nil).instantiateViewController(withIdentifier: "ExpandableViewController") as? ExpandableViewController {
+        if let newsVc = UIStoryboard(name: Constants.StoryBoards.news, bundle: nil).instantiateViewController(withIdentifier: Constants.Vcs.expandableViewController) as? ExpandableViewController {
             newsVc.coordinator = self
             navigationController.pushViewController(newsVc, animated: true)
         }
@@ -29,5 +29,8 @@ class NewsCoordinator: Coordinator {
         exchangeCordi.start()
     }
     
+    func finish() {
+        navigationController.popViewController(animated: true)
+    }
 }
 

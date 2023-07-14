@@ -18,7 +18,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         
         guard let _ = (scene as? UIWindowScene) else { return }
-        //  setCoordinator(scene)
+        setCoordinator(scene)
     }
     
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -50,7 +50,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     func setCoordinator(_ scene: UIScene) {
-        
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let appWindow = UIWindow(frame: windowScene.coordinateSpace.bounds)
         appWindow.windowScene = windowScene
@@ -63,7 +62,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         appWindow.makeKeyAndVisible()
 
         window = appWindow
-        
     }
     
 }
