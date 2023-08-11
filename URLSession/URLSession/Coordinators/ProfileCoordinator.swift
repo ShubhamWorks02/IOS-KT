@@ -39,5 +39,10 @@ class ProfileCoordinator: Coordinator {
         }
     }
     
+    func goToLoginVc() {
+        let loginCoordinator = LoginCoordinator(navigationController: navigationController, window: window)
+        loginCoordinator.start()
+    }
+    
 }
 

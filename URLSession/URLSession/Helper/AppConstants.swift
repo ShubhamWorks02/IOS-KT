@@ -11,14 +11,6 @@ struct Constants {
     
     struct Cell {
         static let expandableTableViewCell = "ExpandableTableViewCell"
-        static let indexTableViewCell = "IndexTableViewCell"
-        static let jobCollectionViewCell = "JobCollectionViewCell"
-        static let headerCollectionViewCell = "HeaderCollectionViewCell"
-        static let demoCollectionViewCell = "DemoCollectionViewCell"
-        static let containerTableViewCell = "ContainerTableViewCell"
-        static let nestedCollectionViewCell = "NestedCollectionViewCell"
-        static let jobDetailCollectionViewCell = "JobDetailCollectionViewCell"
-        static let openingTableViewCell = "OpeningTableViewCell"
         static let userTableViewCell = "UserTableViewCell"
     }
     
@@ -29,6 +21,7 @@ struct Constants {
         static let homeVc = "HomeVc"
         static let editProfileVc = "EditProfileVc"
         static let profileVc = "ProfileVc"
+        static let loginVc = "LoginVc"
     }
     
     struct StoryBoards {
@@ -46,6 +39,14 @@ struct Constants {
         static let fieldSuggession = "Please fill in all the fields."
         static let alertActionOk = "OK"
         static let userJobName = "zion resident"
+        static let noDataAvailable = "No Data Available"
+        static let responseLabel = "Response"
+        static let serializedObj = "Serialized JSON object"
+        static let serializedError = "Error in serialization"
+        static let title = "Title"
+        static let description = "Description"
+        static let statusCode = "Status Code"
+        static let codableError = "Codable error"
     }
     
     struct Navigation {
@@ -60,9 +61,30 @@ struct Constants {
         static let colorTheme = "themeColor"
         static let imgback2 = "imgback2"
         static let imgTick = "imgTick"
+        static let starShotImage = "starShot"
     }
     
     struct ApiInfo {
-        static let baseUrlUserListing = "https://reqres.in"
+        static var baseUrlUserListing = "https://reqres.in"
+        static let downloadUrl = "https://i.ibb.co/Z6zP5BQ/wallpaperflare-com-wallpaper-12.jpg"
+        static let apiInvalidError = "Invalid response"
+        static let post = "POST"
+        static let patch = "PATCH"
+        static let delete = "DELETE"
+        static let get = "GET"
+        static let put = "PUT"
+        static let userListingUrl = "https://reqres.in/api/users?page=2"
+        static let downloadCompleted = "Download Completed"
+        static let localFile = "file.pdf"
+        static let fileMovingError = "Error moving file"
+        static let movedFileLocation = "Moved file location"
+        static let downloadTaskError = "Download task error"
+        static let uploadUrl = "https://api.imgbb.com/1/upload"
+        static let afBaseUrl = "https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=e4a998b5b52847ab9676f1907648c874"
     }
+    
+    struct ProjectInfo {
+        static let domain = "com.example.ApiService"
+    }
+    
 }

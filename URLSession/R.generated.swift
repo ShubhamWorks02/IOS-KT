@@ -237,6 +237,7 @@ struct _R {
 
       var editProfileVc: RswiftResources.StoryboardViewControllerIdentifier<EditProfileVc> { .init(identifier: "EditProfileVc", storyboard: name, bundle: bundle) }
       var homeVc: RswiftResources.StoryboardViewControllerIdentifier<HomeVc> { .init(identifier: "HomeVc", storyboard: name, bundle: bundle) }
+      var loginVc: RswiftResources.StoryboardViewControllerIdentifier<LoginVc> { .init(identifier: "LoginVc", storyboard: name, bundle: bundle) }
       var profileVc: RswiftResources.StoryboardViewControllerIdentifier<ProfileVc> { .init(identifier: "ProfileVc", storyboard: name, bundle: bundle) }
 
       func validate() throws {
@@ -248,6 +249,7 @@ struct _R {
         if UIKit.UIColor(named: "themeColor", in: bundle, compatibleWith: nil) == nil { throw RswiftResources.ValidationError("[R.swift] Color named 'themeColor' is used in storyboard 'Kt', but couldn't be loaded.") }
         if editProfileVc() == nil { throw RswiftResources.ValidationError("[R.swift] ViewController with identifier 'editProfileVc' could not be loaded from storyboard 'Kt' as 'EditProfileVc'.") }
         if homeVc() == nil { throw RswiftResources.ValidationError("[R.swift] ViewController with identifier 'homeVc' could not be loaded from storyboard 'Kt' as 'HomeVc'.") }
+        if loginVc() == nil { throw RswiftResources.ValidationError("[R.swift] ViewController with identifier 'loginVc' could not be loaded from storyboard 'Kt' as 'LoginVc'.") }
         if profileVc() == nil { throw RswiftResources.ValidationError("[R.swift] ViewController with identifier 'profileVc' could not be loaded from storyboard 'Kt' as 'ProfileVc'.") }
       }
     }

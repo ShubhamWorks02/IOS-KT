@@ -44,7 +44,7 @@ extension HomeVc: UITableViewDataSource {
         guard let cell = tblUserList.dequeueReusableCell(withIdentifier: Constants.Cell.userTableViewCell) as? UserTableViewCell else {
             return UITableViewCell()
         }
-        cell.configCell(data: viewModel.userList.value[indexPath.row]) // viewmodel.users
+        cell.configCell(data: viewModel.userList.value[indexPath.row])
         return cell
     }
     
@@ -56,7 +56,7 @@ extension HomeVc: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         searchTimer?.invalidate()
         searchTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { [weak self] _ in
-            self?.viewModel.filterUsers(searchQuery: searchText) //
+            self?.viewModel.filterUsers(searchQuery: searchText)
             if (searchText.isEmpty) {
                 self?.viewModel.isSearching = false
             }
@@ -73,13 +73,7 @@ extension HomeVc: UISearchBarDelegate {
 extension HomeVc: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
-        guard let userProfileVc = storyboard?.instantiateViewController(
-            withIdentifier: "ProfileVc") as? ProfileVc else {
-            return
-        }
-        userProfileVc.userData = viewModel.userList.value[indexPath.row]
-        navigationController?.pushViewController(userProfileVc, animated: true)
+        coordinator?.goToProfileVc(user: viewModel.userList.value[indexPath.row])
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -124,10 +118,23 @@ extension HomeVc {
 // MARK: BIND DATA
 extension HomeVc {
     private func assignApiData() {
+        var noDataLabel: UILabel = UILabel(frame: CGRectMake(0, 0, (self.tblUserList.bounds.size.width), (self.tblUserList.bounds.size.height)))
+        noDataLabel.text = Constants.Strings.noDataAvailable
+        noDataLabel.textColor = UIColor(named: Constants.Resources.colorTableTheme)
+        noDataLabel.textAlignment = NSTextAlignment.center
         viewModel.userList.bind { [weak self] _ in
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [self] in
+                if self?.viewModel.userList.value.count == 0 {
+                    noDataLabel.isHidden = false
+                    noDataLabel.isEnabled = true
+                } else {
+                    noDataLabel.isHidden = true
+                    noDataLabel.isEnabled = false
+                }
+                self?.tblUserList.backgroundView = noDataLabel
                 self?.tblUserList.reloadData()
             }
+            
         }
     }
 }

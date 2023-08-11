@@ -18,21 +18,15 @@ class HomeViewModel {
     private var filterUsersList = [User]()
     var isSearching = false
     
+    // MARK: API CALL
     func getUsers() {
         currentPage.value += 1
-        let endPoint = RequestInfo.getUsers(page: currentPage.value, perPage: 4, delay: 3)
-//        "api/users?page=\(currentPage.value)&per_page=\(4)&delay=\(3)"
-        // Connection checks
-        let reachability = try? Reachability()
-        if reachability?.connection == .unavailable {
-            print(Constants.Strings.connectionError)
-            return
-        }
+        let endPoint = RequestInfo.getUsers(page: currentPage.value,perPage: 4, delay: 2)
         isLoadingData.value = true
         
         Task {
             do {
-                let users: UserData = try await ApiService.shared.get(endpoint: endPoint)
+                let users: UserData = try await ApiService.shared.get(endpoint: endPoint.path)
                 self.totalPages.value = users.totalPages ?? 20
                 if let users = users.data {
                     userList.value += users
@@ -42,12 +36,14 @@ class HomeViewModel {
             } catch {
                 currentPage.value -= 1
                 print("\(Constants.Strings.error): \(error)")
+                isLoadingData.value = false
             }
             
         }
        
     }
     
+    // MARK: FILTERATION
     func filterUsers(searchQuery: String) {
         isSearching = true
         if searchQuery.isEmpty {

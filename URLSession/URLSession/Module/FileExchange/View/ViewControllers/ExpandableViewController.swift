@@ -31,6 +31,7 @@ class ExpandableViewController: UIViewController {
         super.viewDidLoad()
         initValues()
         assignApiData()
+        Constants.ApiInfo.baseUrlUserListing = "https://newsapi.org"
         viewModel.getNews()
     }
     

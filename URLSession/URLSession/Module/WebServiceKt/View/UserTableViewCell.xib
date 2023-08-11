@@ -24,26 +24,26 @@
                             <constraint firstAttribute="width" secondItem="fpv-F8-mZK" secondAttribute="height" multiplier="1:1" id="HLW-oI-1Nb"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="id:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k3y-eM-A5w">
-                        <rect key="frame" x="90" y="61.333333333333343" width="15" height="15.666666666666657"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="253" text="id:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k3y-eM-A5w">
+                        <rect key="frame" x="90" y="64.333333333333329" width="15" height="15.666666666666671"/>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                         <color key="textColor" name="formFontColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Tamaki Ruyashi jkdfdf" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uPj-CM-DIe">
-                        <rect key="frame" x="90" y="8" width="178.33333333333337" height="20.333333333333329"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tamaki Ruyashi jkdfdf" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uPj-CM-DIe">
+                        <rect key="frame" x="90.000000000000014" y="7.9999999999999982" width="178.33333333333337" height="23.333333333333329"/>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                         <color key="textColor" name="tableTheme"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="tamaki_ruyashi@gmail.com" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B9T-UM-Lpq">
-                        <rect key="frame" x="90" y="37" width="187.33333333333337" height="18"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="tamaki_ruyashi@gmail.com" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B9T-UM-Lpq">
+                        <rect key="frame" x="90.000000000000014" y="39.333333333333336" width="187.33333333333337" height="18"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <color key="textColor" name="formFontColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="UserId" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CwY-pK-3v6">
-                        <rect key="frame" x="113" y="62" width="48.666666666666671" height="18"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="UserId" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CwY-pK-3v6">
+                        <rect key="frame" x="113.00000000000001" y="64.333333333333329" width="48.666666666666671" height="18"/>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                         <color key="textColor" name="tableTheme"/>
                         <nil key="highlightedColor"/>
@@ -80,7 +80,7 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="sampleImg" width="32" height="32"/>
+        <image name="sampleImg" width="16" height="16"/>
         <namedColor name="formFontColor">
             <color red="0.29803921568627451" green="0.34509803921568627" blue="0.37254901960784315" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

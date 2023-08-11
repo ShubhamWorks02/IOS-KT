@@ -26,7 +26,6 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // fetchData()
         // apiCallUsingAlamofire(callType: .getJsonCall)
         // register(user: User(email: "eve.holt@reqres.in", password: "pistol"))
         // getDataFromServer()
@@ -41,47 +40,26 @@ class ViewController: UIViewController {
     }
     
     
-//    private func fetchData() {
-//        Task {
-//            do {
-//                let welcome: Welcome = try await ApiService.shared.get(endpoint: "api/users?page=2")
-//                // Access the response data
-//                print("Page: \(welcome.page)")
-//                print("Total Users: \(welcome.data.count)")
-//                // Access individual user data
-//                for user in welcome.data {
-//                    print("User ID: \(user.id)")
-//                    print("Email: \(user.email)")
-//                    print("First Name: \(user.firstName)")
-//                    print("Last Name: \(user.lastName)")
-//                    print("Avatar: \(user.avatar)")
-//                    print("---")
-//                }
-//            } catch {
-//                // Handle error
-//                print("Error: \(error)")
-//            }
-//        }
-//    }
-    
+    // RAW different ways for api calls (Web service starting )
+
     private func getDataFromServer() {
         
-        if let url = URL(string: "https://reqres.in/api/users?page=2") {
+        if let url = URL(string: Constants.ApiInfo.userListingUrl) {
             let urlRequest = URLRequest(url: url)
             let dataTask = URLSession.shared.dataTask(with: urlRequest) { urlData, urlResponse, error in
                 guard let data = urlData else {
                     if let error = error {
-                        print("Error: \(error)")
+                        print("\(Constants.Strings.error): \(error)")
                     }
                     return
                 }
                 
                 do {
                     if let jsonObject = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-                        print("Serialized JSON object: \(jsonObject)")
+                        print("\(Constants.Strings.serializedObj): \(jsonObject)")
                     }
                 } catch {
-                    print("Error serializing JSON: \(error)")
+                    print("\(Constants.Strings.serializedError): \(error)")
                 }
             }
             dataTask.resume()
@@ -89,9 +67,9 @@ class ViewController: UIViewController {
     }
     
     private func apiCallUsingAlamofireGet() {
-        AF.request("https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=e4a998b5b52847ab9676f1907648c874").response { response in
+        AF.request(Constants.ApiInfo.afBaseUrl).response { response in
             guard let data = response.data else {
-                print("Invalid response")
+                print(Constants.ApiInfo.apiInvalidError)
                 return
             }
             print(data)
@@ -100,28 +78,28 @@ class ViewController: UIViewController {
                 if let articles = newsModel.articles {
                     for article in articles {
                         if let title = article.title, let description = article.description {
-                            print("Title: \(title)")
-                            print("Description: \(description)\n")
+                            print("\(Constants.Strings.title): \(title)")
+                            print("\(Constants.Strings.description): \(description)\n")
                         }
                     }
                 }
             } catch {
-                print("Error decoding response: \(error)")
+                print("\(Constants.ApiInfo.apiInvalidError): \(error)")
             }
         }
         
     }
     
     private func apiCallUsingAlamofireDecode() {
-        let request = AF.request("https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=e4a998b5b52847ab9676f1907648c874")
+        let request = AF.request(Constants.ApiInfo.afBaseUrl)
         request.responseDecodable(of: NewsModel.self) { (response) in
             switch response.result {
             case .success(let newsModel):
                 if let articles = newsModel.articles {
                     for article in articles {
                         if let title = article.title, let description = article.description {
-                            print("Title: \(title)")
-                            print("Description: \(description)\n")
+                            print("\(Constants.Strings.title): \(title)")
+                            print("\(Constants.Strings.description): \(description)\n")
                         }
                     }
                 }
@@ -136,7 +114,7 @@ class ViewController: UIViewController {
     private func apiCallUsingAlamofire(callType: AlamofireCallType) {
         var reachability = try? Reachability()
         if reachability?.connection == .unavailable {
-            print("Connection Required")
+            print(Constants.Strings.connectionError)
             return
         }
         switch callType {
@@ -149,14 +127,14 @@ class ViewController: UIViewController {
     }
     
     func register(user: User) {
-        if let url = URL(string: "https://reqres.in/api/register") {
+        if let url = URL(string: RequestInfo.login.path) {
             var urlRequest = URLRequest(url: url)
-            urlRequest.httpMethod = "POST"
+            urlRequest.httpMethod = Constants.ApiInfo.post
             
             do {
                 urlRequest.httpBody = try JSONEncoder().encode(user)
             } catch let error {
-                print("Codable error: ", error)
+                print("\(Constants.Strings.codableError): ", error)
             }
             
             urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -164,17 +142,17 @@ class ViewController: UIViewController {
             
             let dataTask = URLSession.shared.dataTask(with: urlRequest) { (urlData, urlResponse, error) in
                 if let error = error {
-                    print("Error: \(error)")
+                    print("\(Constants.Strings.error): \(error)")
                     return
                 }
                 
                 guard let httpResponse = urlResponse as? HTTPURLResponse else {
-                    print("Invalid HTTP response")
+                    print(Constants.ApiInfo.apiInvalidError)
                     return
                 }
                 
                 let statusCode = httpResponse.statusCode
-                print("Status Code: \(statusCode)")
+                print("\(Constants.Strings.statusCode): \(statusCode)")
                 
                 if let data = urlData {
                     do {
@@ -183,9 +161,9 @@ class ViewController: UIViewController {
                         guard let strObj = String(data: prettyObj, encoding: .utf8) else {
                             return
                         }
-                        print("JSON response: \(jsonObject)")
+                        print("\(Constants.Strings.responseLabel): \(jsonObject)")
                     } catch let error {
-                        print("Error serializing JSON: \(error)")
+                        print("\(Constants.Strings.error): \(error)")
                     }
                 }
             }

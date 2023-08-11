@@ -18,8 +18,15 @@ class AppCoordinator: Coordinator {
     }
     
     func start() {
-        let homeCoordinator = HomeCoordinator(navigationController: navigationController, window: window)
-        homeCoordinator.start()
+        if (UserManager.shared.isUserLogin) {
+            DispatchQueue.main.async {
+                let homeCoordinator = HomeCoordinator(navigationController: self.navigationController, window: self.window)
+                homeCoordinator.start()
+            }
+            return
+        }
+        let loginCoordinator = LoginCoordinator(navigationController: navigationController, window: window)
+        loginCoordinator.start()
     }
     
     func finish() {

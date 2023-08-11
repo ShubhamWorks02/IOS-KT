@@ -35,14 +35,17 @@ class ProfileVc: UIViewController , UpdateUserDataDelegate {
     }
     
     @objc private func editProfileTapped(_ sender: UITapGestureRecognizer) {
-        guard let editProfileVc = storyboard?.instantiateViewController(
-            withIdentifier: Constants.Vcs.editProfileVc) as? EditProfileVc else {
-            return
-        }
-        editProfileVc.userDelegate = self
-        editProfileVc.userData = userData
-        navigationController?.pushViewController(editProfileVc, animated: true)
+        coordinator?.goToEditProfileVc()
     }
+    
+    
+    @IBAction func logOutTapped(_ sender: UIButton) {
+        UserManager.shared.isUserLogin = false
+        DispatchQueue.main.async {
+            self.coordinator?.goToLoginVc()
+        }
+    }
+    
 }
 
 // MARK: UI SETUPS
